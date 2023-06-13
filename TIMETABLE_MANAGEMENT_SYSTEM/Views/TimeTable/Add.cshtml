@@ -1,0 +1,325 @@
+﻿@{
+    ViewData["Title"] = "Add";
+}
+
+<div class="row">
+    <div class="form-group col-md-4">
+        <label for="DEPT_ID">Department</label><span style="color:red;">*</span>
+        <select asp="DEPT_ID" id="DEPT_ID" asp-items="@(new SelectList( ViewBag.Department,"DEPT_ID","DEPT_NAME"))" class="form-control">
+        </select>
+        <label id="year" style="float:right"></label>
+    </div>
+    <div class="form-group col-md-4" id="divBranch">
+        <label for="BRANCH_NAME">Branch</label><span style="color:red;">*</span>
+        <select asp="BRANCH_ID" id="BRANCH_ID" class="form-control">
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label for="SEMISTER_ID">Semester</label><span style="color:red;">*</span>
+        <select asp="SEMISTER_ID" id="SEMISTER_ID" class="form-control">
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-md-4">
+        <label for="DAY">Day</label><span style="color:red;">*</span>
+        <select asp="DAY" id="DAY" class="form-control">
+            <option value="0">Please Select Day</option>
+            <option value="1">MON</option>
+            <option value="2">TUE</option>
+            <option value="3">WED</option>
+            <option value="4">THU</option>
+            <option value="5">FRI</option>
+            <option value="6">SAT</option>
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label for="TEACHER_NAME">Teacher Asign</label><span style="color:red;">*</span>
+        <input type="text" id="TEACHER_NAME" class="form-control" placeholder="Enter Teacher Name" />
+        <span style="color:red;"></span>
+    </div>
+    <div class="form-group col-md-4">
+        <label for="SUBJECT_NAME">Subject</label><span style="color:red;">*</span>
+        <input type="text" id="SUBJECT_NAME" class="form-control" placeholder="Enter Subject Name" />
+        <span style="color:red;"></span>
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-md-4">
+        <label for="period">Period</label><span style="color:red;">*</span>
+        <select asp="period" id="period" class="form-control">
+            <option value="0">Please Select Period</option>
+            <option value="1">1ST-PERIOD</option>
+            <option value="2">2ND-PERIOD</option>
+            <option value="3">3RD-PERIOD</option>
+            <option value="4">4TH-PERIOD</option>
+            <option value="5">5TH-PERIOD</option>
+            <option value="6">6TH-PERIOD</option>
+            <option value="7">7TH-PERIOD</option>
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label for="from">From</label><span style="color:red;">*</span>
+        <input type="time" id="from" class="form-control" />
+        <span style="color:red;"></span>
+    </div>
+    <div class="form-group col-md-4">
+        <label for="to">To</label><span style="color:red;">*</span>
+        <input type="time" id="to" class="form-control" />
+        <span style="color:red;"></span>
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-md-4"></div>
+    <div class="form-group col-md-4"></div>
+    <div class="form-group col-md-4">
+        <input type="button" id="btnAdd" value="Add" class="btn btn-primary" style="float:right" />
+    </div>
+</div>
+<div class="table row text-center" id="divTable">
+    <table id="timePeriod" align="center">
+        <thead>
+            <tr>
+                <th>Period(Which Period ?)</th>
+                <th>Subject</th>
+                <th>Teacher Assign</th>
+                <th>Time Taken</th>
+                <th>Total Time</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col-sm-12 text-center mt-3 form-group">
+        <input type="button" id="saveupdate" value="Submit" class="btn btn-primary" />
+        <input type="button" id="btnreset" value="Reset" class="btn btn-danger" />
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    function Validation() {
+
+        if ($('#DEPT_ID').val() == 0) {
+            alert("Please Select Department")
+            $('#DEPT_ID').focus();
+            return false;
+        }
+        else if ($('#DEPT_ID').text() == "B.TECH") {
+            if ($('#BRANCH_ID').val() == 0) {
+                alert("Please Select Branch")
+                $('#BRANCH_ID').focus();
+                return false;
+            }
+            return false;
+        }
+        else if ($('#SEMISTER_ID').val() == 0) {
+            alert("Please Select Semister")
+            $('#SEMISTER_ID').focus();
+            return false;
+        }
+        else if ($('#DAY').val() == 0) {
+            alert("Please Select Day")
+            $('#DAY').focus();
+            return false;
+        }
+        else if ($('#timePeriod tbody tr').length <= 0) {
+            alert('Please Add Periods First');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function Validate() {
+        if ($('#TEACHER_NAME').val() == "") {
+            alert("Please Enter Teacher's Name")
+            $('#TEACHER_NAME').focus();
+            return false;
+        }
+        else if ($('#SUBJECT_NAME').val() == "") {
+            alert("Please Enter Subject Name")
+            $('#SUBJECT_NAME').focus();
+            return false;
+        }
+        else if ($('#period').val() == 0) {
+            alert("Please Select Period")
+            $('#period').focus();
+            return false;
+        }
+        else if ($('#from').val() == "") {
+            alert("Please Enter From Time")
+            $('#DAY').focus();
+            return false;
+        }
+        else if ($('#to').val() == "") {
+            alert('Please Enter To Time');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    $(window).on("load", function () {
+        $("#divBranch").hide();
+        $("#divTable").hide();
+    });
+
+    $(document).ready(function () {
+        $("#DEPT_ID").change(function () {
+
+            var id = $(this).val();
+            $("#year").empty();
+            $.getJSON("/TimeTable/Year_Bind", { DEPT_ID: id }, function (data) {
+                prod = JSON.parse(data);
+
+                var noofyear = prod[0].NO_OF_YEAR
+                $("#year").text(`(` + noofyear + ` Years)`);
+
+
+                $("#SEMISTER_ID").empty();
+                $.getJSON("/TimeTable/Semister_Bind", { NO_OF_YEAR: noofyear }, function (data) {
+                    data = JSON.parse(data);
+                    var v = "<option value=0>Please Select Semister</option>";
+                    $.each(data, function (i, v1) {
+                        v += "<option value=" + v1.Value + ">" + v1.Text + "</option>";
+                    });
+                    $("#SEMISTER_ID").html(v);
+                });
+            });
+
+            if ($('#DEPT_ID option:selected').text() == "B.TECH") {
+                $('#divBranch').show();
+                $("#BRANCH_ID").empty();
+
+                $.getJSON("/TimeTable/Branch_Bind", { DEPT_ID: id }, function (data) {
+                    data = JSON.parse(data);
+                    var v = "<option value=0>Please Select Branch</option>";
+                    $.each(data, function (i, v1) {
+                        v += "<option value=" + v1.Value + ">" + v1.Text + "</option>";
+                    });
+                    $("#BRANCH_ID").html(v);
+                });
+            }
+            else {
+                $('#divBranch').hide();
+            }
+
+
+        });
+    })
+
+    $("#saveupdate").click(function () {
+        if (Validation()) {
+            debugger
+            var Items = []; //array declaring to store the records to send it to controller
+            var entity = {};
+            var tbl = document.getElementById('timePeriod');
+            for (var i = 1; i < tbl.rows.length; i++) {
+                var item1 = {};
+                item1.PERIODS = tbl.rows[i].children[0].textContent;
+                item1.SUBJECT_NAME = tbl.rows[i].children[1].textContent;
+                item1.TEACHER_NAME = tbl.rows[i].children[2].textContent;
+                item1.FROMTIME = tbl.rows[i].children[3].textContent;
+                item1.TOTALTIME = tbl.rows[i].children[4].textContent;
+                //item1.TOTALTIME = tbl.rows[i].children[5].textContent;
+                Items.push(item1);
+            }
+            entity.DEPT_ID = $("#DEPT_ID").val();
+            entity.BRANCH_ID = $("#BRANCH_ID").val();
+            entity.SEMISTER_ID = $("#SEMISTER_ID").val();
+            entity.SEMISTER_NAME = $('#SEMISTER_ID option:selected').text();
+            entity.DAY = $('#DAY option:selected').text();
+            var y = $("#year").text();
+            var year = y.substring(1,2);
+            entity.YEAR_OF_EDUCATION = year;
+            entity.listPeriod = Items;
+
+            $.ajax({
+                url: "/TimeTable/SaveUpdate",
+                data: entity,
+                type: "POST",
+                success: function (result) {
+                    
+                },
+                error: function (errormessage) {
+                    alert("error");
+                }
+            });
+        };
+    });
+
+    $("#btnAdd").click(function () {
+        if (Validate()) {
+            $("#divTable").show();
+            var teacher = $('#TEACHER_NAME').val();
+            var subject = $('#SUBJECT_NAME').val();
+            var timeperiod = $('#period option:selected').text();
+            var fromtime = $('#from').val();
+            var totime = $('#to').val();
+            s = fromtime.split(':');
+            e = totime.split(':');
+            min = e[1] - s[1];
+            hour_carry = 0;
+            if (min < 0) {
+                min += 60;
+                hour_carry += 1;
+            }
+            hour = e[0] - s[0] - hour_carry;
+            if (hour == "0") {
+                diff = min + "min";
+            }
+            else if (min == "0") {
+                diff = hour + "hr";
+            }
+            else {
+                diff = hour + ":" + min;
+            }
+
+            //$("#timePeriod tbody").append(
+            //    `<tr><td>` + timeperiod + `</td><td>` + subject + `</td><td>` + teacher + `</td><td>` + fromtime + `-` + totime + `</td><td>` + diff + `</td></tr>`
+            //);
+
+
+            var rowcount = $("#timePeriod tbody tr").length;
+            var colcount = $("#timePeriod tbody tr td").length;
+            var i
+
+            if (rowcount != 0) {
+                for (i = 0; i < rowcount; i++) {
+                    var row = $("#timePeriod tbody").find("tr").eq(i).html();
+                   
+                    var item1 = [];
+                    var tbl = document.getElementById('timePeriod');
+                    for (var i = 0; i < tbl.rows.length; i++) {
+                        item1.push(tbl.rows[i].children[0].textContent)
+                    }
+                    
+                    var skillsSelect = document.getElementById("period");
+                    var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+
+
+                    if (item1.includes(selectedText)) {
+                        alert(selectedText + " is Already Added");
+                        return;
+                    }
+                    else {
+                        $("#timePeriod tbody").append(
+                            `<tr><td>` + timeperiod + `</td><td>` + subject + `</td><td>` + teacher + `</td><td>` + fromtime + `-` + totime + `</td><td>` + diff + `</td></tr>`
+                        );
+                    }
+                    
+                }
+            }
+            else {
+                $("#timePeriod tbody").append(
+                    `<tr><td>` + timeperiod + `</td><td>` + subject + `</td><td>` + teacher + `</td><td>` + fromtime + `-` + totime + `</td><td>` + diff + `</td></tr>`
+                );
+            }
+        };
+    });
+</script>
